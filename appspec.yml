@@ -1,1 +1,30 @@
+version: 0.0
 
+os: linux
+
+files:
+  - source: /
+    destination: /var/www/nodejs-cicd-app
+
+permissions:
+  - object: /var/www/nodejs-cicd-app
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+
+  ApplicationStop:
+    - location: scripts/stop_application.sh
+      timeout: 60
+      runas: root
+
+  AfterInstall:
+    - location: scripts/install_dependencies.sh
+      timeout: 300
+      runas: root
+
+  ApplicationStart:
+    - location: scripts/start_application.sh
+      timeout: 60
+      runas: root
